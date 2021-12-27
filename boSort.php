@@ -6,7 +6,7 @@
 <input type="submit", value="Sort">
 </form>
 <?php 
-include_once 'WordGranules.php';
+include_once 'reorder.php';
 echo "<br>";
 //echo "Enter Tibetan texts separated by ','(without single quote):<br>";
 $user_input=$_POST["text"]; 
@@ -14,14 +14,7 @@ $input = mb_split(",", $user_input);
 //$inputSize = count($input);
 
 for ($i=0; $i< count($input); $i++) { 
-	#split key by word
-	$wordArray=mb_split("་", $input[$i]);
-
-	$reordVal="";
-	foreach ($wordArray as $eachWord) {
-		$wordClass=new WordGranules();
-		$reordVal.= $wordClass->getOrderedParts($eachWord);
-	}
+	$reordVal = reorder($input[$i]);
 	##we need indexes attached for sorting multiple occurence of the same text
 	$output[$i. "-". $input[$i]] =$reordVal;
 

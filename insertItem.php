@@ -18,8 +18,7 @@ if (isset($_POST["reset"])){
         exit();
 }
 
-
-include_once 'WordGranules.php';
+include_once 'reorder.php';
 
 if (isset($_POST["text"])) {
         $user_input=$_POST["text"];
@@ -28,24 +27,14 @@ if (isset($_POST["text"])) {
 }
 
 if (file_exists($tmpfname)) {
-     /*   $file_array = parse_ini_file($tmpfname);
-        print_r($file_array);*/
         ##this happens when a new item is inserted.             
         $orderedList=array();
         $insertPos=-1;
 
         if (!$user_input=="") {
-                
-                #split key by word
-                $wordArray=mb_split("་", $user_input);
-
-                $insertVal="";
-                foreach ($wordArray as $eachWord) {
-                        $wordClass=new WordGranules();
-                        $insertVal.= $wordClass->getOrderedParts($eachWord);
-                }
+                $insertVal = reorder($user_input);
                 ##we need indexes attached for sorting multiple occurence, since the index counting is not known, put x to avoid key conflict.
-                $insertArray[time(). "-". $user_input] =$insertVal;
+                $insertArray[time(). "-". $user_input] = $insertVal;
 
                 if (filesize($tmpfname) == 0){
                         ##write it in the tmp file
